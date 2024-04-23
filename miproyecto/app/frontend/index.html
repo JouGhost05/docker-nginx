@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Aplicación Web</title>
+</head>
+<body>
+    <h1>¡Hola desde el Frontend!</h1>
+    <button onclick="fetchGreeting()">Saludar</button>
+    <p id="greeting"></p>
+    <script>
+        async function fetchGreeting() {
+            const response = await fetch('/api/saludo');
+            const data = await response.json();
+            document.getElementById('greeting').textContent = data.mensaje;
+        }
+    </script>
+</body>
+</html>
