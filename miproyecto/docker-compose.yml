@@ -6,12 +6,14 @@ services:
       - ./app/frontend:/usr/share/nginx/html
       - ./nginx:/etc/nginx/conf.d
     ports:
-      - "80:80"
+      - "8000:80"  # Cambié el puerto para que coincida con el puerto por defecto de nginx
     depends_on:
       - backend
 
   backend:
-    image: tiangolo/uvicorn-gunicorn-fastapi:python3.8
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile
     volumes:
       - ./app/backend:/app
     environment:
