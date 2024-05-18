@@ -1,6 +1,6 @@
 import time
 
-time.sleep(10)
+time.sleep(5)
 
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -22,10 +22,10 @@ Base = declarative_base()
 templates = Jinja2Templates(directory="/usr/share/nginx/html")
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "usuarios"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50))
     email = Column(String(50))
+    password = Column(String(50))
 
 Base.metadata.create_all(bind=engine)
 
@@ -34,11 +34,11 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/submit")
-async def submit_form(name: str = Form(...), email: str = Form(...)):
+async def submit_form(email: str = Form(...), password: str = Form(...)):
     db = SessionLocal()
-    user = User(name=name, email=email)
+    user = User(email=email, password=password)
     db.add(user)
     db.commit()
     db.refresh(user)
     db.close()
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/error.html", status_code=303)
